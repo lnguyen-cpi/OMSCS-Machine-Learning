@@ -11,8 +11,8 @@ df = pd.read_csv("../dataset/car_valuation/car.data",
                  header=None)
 
 # Remove all labels 'good' and 'vgood'
-df = df[df['label'] != 'good']
-df = df[df['label'] != 'vgood']
+# df = df[df['label'] != 'good']
+# df = df[df['label'] != 'vgood']
 
 cleanup_nums = {
     "buying_price": {
@@ -35,7 +35,7 @@ cleanup_nums = {
     },
     "label": {
         "unacc": 0, "acc": 1,
-        # "good": 2, "vgood": 3
+        "good": 2, "vgood": 3
     }
 
 }
@@ -48,19 +48,8 @@ df = df.astype(int)
 data = df.loc[:, ['buying_price', 'maintained_price', 'doors', 'persons', 'lug_boot', 'safety']]
 label = df.loc[:, ['label']]
 
-# print(len(data))
-# print(len(label))
 
-training_data, test_data, training_label, test_label = train_test_split(data, label, test_size=0.75, random_state=42)
+training_data, test_data, training_label, test_label = train_test_split(
+    data, label, test_size=0.75, random_state=42
+)
 
-
-
-# print(df['buying_price'].unique())
-# print(df['maintained_price'].unique())
-# print(df['doors'].unique())
-# print(df['persons'].unique())
-# print(df['lug_boot'].unique())
-# print(df['safety'].unique())
-# print(df['label'].unique())
-#
-# print(df.head(5))

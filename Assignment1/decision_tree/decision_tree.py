@@ -9,31 +9,45 @@ from sklearn.model_selection import GridSearchCV
 
 
 from dataset import car_valuation
+from dataset import occupancy
 
-X = car_valuation.training_data
-Y = car_valuation.training_label
 
-# Uncomment and runs this block of code to
-# figure out optimal parameter
-# Output
-# {'criterion': 'entropy', 'max_depth': 9, 'min_samples_leaf': 2, 'min_samples_split': 3}
+# Choose dataset
 
-# ds_tree = tree.DecisionTreeClassifier()
-# parameters = {'max_depth': list(range(1, 20)),
-#               'criterion': ['gini', 'entropy'],
-#               'min_samples_split': range(2, 10),
-#               'min_samples_leaf': range(2, 10),
-#               }
-# gs = GridSearchCV(ds_tree, parameters)
-# gs.fit(X, Y)
-# print(gs.best_params_)
+# dataset = car_valuation
+dataset = occupancy
+
+X = dataset.training_data
+Y = dataset.training_label
+
+# Uncomment and runs this block of code to figure out optimal parameter
+
+ds_tree = tree.DecisionTreeClassifier()
+parameters = {'max_depth': list(range(1, 20)),
+              'criterion': ['gini', 'entropy'],
+              'min_samples_split': range(2, 10),
+              'min_samples_leaf': range(2, 10),
+              }
+gs = GridSearchCV(ds_tree, parameters)
+gs.fit(X, Y)
+print(gs.best_params_)
+
+#                      Output for car valuation dataset
+##########################################################################################
+# {'criterion': 'entropy', 'max_depth': 9, 'min_samples_leaf': 2, 'min_samples_split': 3}#
+##########################################################################################
+
+#                      Output for occupancy dataset
+##########################################################################################
+# {'criterion': 'entropy', 'max_depth': 6, 'min_samples_leaf': 5, 'min_samples_split': 4}#
+##########################################################################################
 
 
 val_decision_tree = tree.DecisionTreeClassifier(
     **{
         'criterion': 'entropy',
-        'min_samples_leaf': 2,
-        'min_samples_split': 3
+        'min_samples_leaf': 5,
+        'min_samples_split': 4
     })
 
 max_depth = list(range(1, 20))
@@ -60,9 +74,9 @@ plt.clf()
 # 'max_depth' = 11 gives best validation accuracy.
 learning_decision_tree = tree.DecisionTreeClassifier(
     **{'criterion': 'entropy',
-       'min_samples_leaf': 2,
-       'min_samples_split': 3,
-       'max_depth': 9
+       'min_samples_leaf': 5,
+       'min_samples_split': 4,
+       'max_depth': 6
        })
 
 train_size = np.linspace(0.1, 1, 10)
@@ -85,5 +99,5 @@ plt.title(f"Learning curve for Decision Tree (Training Size vs Accuracy)")
 plt.savefig('Learning Curve.png')
 
 learning_decision_tree.fit(X, Y)
-predicted_label = learning_decision_tree.predict(car_valuation.test_data)
-print(f"Accuracy of test data {accuracy_score(predicted_label, car_valuation.test_label)}")
+predicted_label = learning_decision_tree.predict(dataset.test_data)
+print(f"Accuracy of test data {accuracy_score(predicted_label, dataset.test_label)}")
