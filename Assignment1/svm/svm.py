@@ -16,7 +16,7 @@ dataset = occupancy
 X = dataset.training_data
 Y = dataset.training_label
 
-linear_svm_classifier = SVC(kernel='linear', random_state=42)
+linear_svm_classifier = SVC(kernel="linear", random_state=42)
 
 
 # gs = GridSearchCV(linear_svm_classifier,
@@ -29,7 +29,9 @@ linear_svm_classifier = SVC(kernel='linear', random_state=42)
 
 
 c_range = list(range(1, 7))
-train_scores, valid_scores = validation_curve(linear_svm_classifier, X, Y, "C", c_range, cv=5)
+train_scores, valid_scores = validation_curve(
+    linear_svm_classifier, X, Y, "C", c_range, cv=5
+)
 
 train_scores_mean = np.mean(train_scores, axis=1)
 test_scores_mean = np.mean(valid_scores, axis=1)
@@ -37,7 +39,7 @@ plt.plot(c_range, train_scores_mean, label="train_scores")
 plt.plot(c_range, test_scores_mean, label="valid_scores")
 plt.legend()
 plt.title(f"Validation curve for LinearSVM (C vs Accuracy)")
-plt.savefig('Validation Curve LinearSVM.png')
+plt.savefig("Validation Curve LinearSVM.png")
 
 plt.clf()
 
@@ -66,9 +68,11 @@ plt.clf()
 # # {'C': 7, 'degree': 4, 'gamma': 'scale'}
 
 
-poly_svm_classifier = SVC(kernel='poly', C=1, gamma='scale', random_state=42)
+poly_svm_classifier = SVC(kernel="poly", C=1, gamma="scale", random_state=42)
 poly_degree = list(range(8))
-train_scores, valid_scores = validation_curve(poly_svm_classifier, X, Y, "degree", poly_degree, cv=5)
+train_scores, valid_scores = validation_curve(
+    poly_svm_classifier, X, Y, "degree", poly_degree, cv=5
+)
 
 train_scores_mean = np.mean(train_scores, axis=1)
 test_scores_mean = np.mean(valid_scores, axis=1)
@@ -76,18 +80,20 @@ plt.plot(poly_degree, train_scores_mean, label="train_scores")
 plt.plot(poly_degree, test_scores_mean, label="valid_scores")
 plt.legend()
 plt.title(f"Validation curve for Poly SVM (Poly Degree vs Accuracy)")
-plt.savefig('Validation Curve Poly.png')
+plt.savefig("Validation Curve Poly.png")
 
 plt.clf()
 
 
 # best_svm_classifier = SVC(kernel='poly', C=1, gamma='scale', degree=5, random_state=42)
-best_svm_classifier = SVC(kernel='linear', random_state=42, C=1)
+best_svm_classifier = SVC(kernel="linear", random_state=42, C=1)
 
 
 train_size = np.linspace(0.1, 1, 10)
 max_iter = list(list(range(100, 3000, 100)))
-train_scores, validation_scores = validation_curve(best_svm_classifier, X, Y, 'max_iter', max_iter, cv=5)
+train_scores, validation_scores = validation_curve(
+    best_svm_classifier, X, Y, "max_iter", max_iter, cv=5
+)
 train_scores_mean = np.mean(train_scores, axis=1)
 val_scores_mean = np.mean(validation_scores, axis=1)
 
@@ -95,7 +101,7 @@ plt.plot(max_iter, train_scores_mean, label="train_scores")
 plt.plot(max_iter, val_scores_mean, label="valid_scores")
 plt.legend()
 plt.title(f"Learning curve for Poly SVM (Max Iteration vs Accuracy)")
-plt.savefig('Learning Curve.png')
+plt.savefig("Learning Curve.png")
 
 best_svm_classifier.fit(X, Y)
 predicted_label = best_svm_classifier.predict(dataset.test_data)

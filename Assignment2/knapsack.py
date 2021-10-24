@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random
 import timeit
+
 SEED = 42
 
 
@@ -42,26 +43,34 @@ for size in range(0, MAX_PROBLEM_SIZE + 1, 10):
     )
 
     start = timeit.default_timer()
-    simulated_annealing_best_state, simulated_annealing_best_fitness, sa_curve = mlrose.simulated_annealing(
+    (
+        simulated_annealing_best_state,
+        simulated_annealing_best_fitness,
+        sa_curve,
+    ) = mlrose.simulated_annealing(
         problem,
         schedule=schedule,
         max_attempts=10,
         max_iters=200,
         init_state=init_state,
         random_state=SEED,
-        curve=True
+        curve=True,
     )
     stop = timeit.default_timer()
     simulated_annealing_run_time_list.append(stop - start)
 
     start = timeit.default_timer()
-    random_hill_climb_best_state, random_hill_climb_best_fitness, rhc_curve = mlrose.random_hill_climb(
+    (
+        random_hill_climb_best_state,
+        random_hill_climb_best_fitness,
+        rhc_curve,
+    ) = mlrose.random_hill_climb(
         problem,
         max_attempts=10,
         max_iters=200,
         init_state=init_state,
         random_state=SEED,
-        curve=True
+        curve=True,
     )
     stop = timeit.default_timer()
     random_hill_climb_run_time_list.append(stop - start)
@@ -73,7 +82,7 @@ for size in range(0, MAX_PROBLEM_SIZE + 1, 10):
         max_attempts=10,
         max_iters=200,
         random_state=SEED,
-        curve=True
+        curve=True,
     )
     stop = timeit.default_timer()
     genetic_alg_run_time_list.append(stop - start)
@@ -85,7 +94,7 @@ for size in range(0, MAX_PROBLEM_SIZE + 1, 10):
         max_attempts=10,
         max_iters=200,
         random_state=SEED,
-        curve=True
+        curve=True,
     )
     stop = timeit.default_timer()
     mimic_run_time_list.append(stop - start)
@@ -103,7 +112,7 @@ plt.plot(sizes, genetic_alg_best_fitness_list, label="ga")
 plt.plot(sizes, mimic_best_fitness_list, label="mimic")
 plt.legend()
 plt.title(f"Fitness Curve for KnapSack")
-plt.savefig('Fitness Curve for KnapSack.png')
+plt.savefig("Fitness Curve for KnapSack.png")
 
 plt.clf()
 
@@ -113,7 +122,7 @@ plt.plot(sizes, genetic_alg_run_time_list, label="ga")
 plt.plot(sizes, mimic_run_time_list, label="mimic")
 plt.legend()
 plt.title(f"Runtime vs Size for KnapSack")
-plt.savefig('Runtime vs Size for KnapSack.png')
+plt.savefig("Runtime vs Size for KnapSack.png")
 
 plt.clf()
 
@@ -123,6 +132,6 @@ plt.plot(range(len(ga_curve[:, 1])), np.cumsum(ga_curve[:, 1]), label="ga")
 plt.plot(range(len(mimic_curve[:, 1])), np.cumsum(mimic_curve[:, 1]), label="mimic")
 plt.legend()
 plt.title(f"Function Evaluation Knapsack (Cumulative Func Evaluation vs Iters)")
-plt.savefig('Function Evaluation Knapsack')
+plt.savefig("Function Evaluation Knapsack")
 
 plt.clf()
