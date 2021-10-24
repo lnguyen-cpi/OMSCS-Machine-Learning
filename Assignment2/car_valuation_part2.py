@@ -18,40 +18,40 @@ def get_random_hill_climb_model():
 
     return mlrose.NeuralNetwork(
         hidden_nodes=[5] * 6,
-        activation='relu',
-        algorithm='random_hill_climb',
+        activation="relu",
+        algorithm="random_hill_climb",
         max_iters=1000,
         is_classifier=True,
         learning_rate=0.001,
         random_state=42,
-        curve=True
+        curve=True,
     )
 
 
 def get_simulated_annealing_model():
     return mlrose.NeuralNetwork(
         hidden_nodes=[5] * 6,
-        activation='relu',
-        algorithm='simulated_annealing',
+        activation="relu",
+        algorithm="simulated_annealing",
         max_iters=1000,
         is_classifier=True,
         learning_rate=0.001,
         random_state=42,
         curve=True,
-        schedule=mlrose.GeomDecay(init_temp=100)
+        schedule=mlrose.GeomDecay(init_temp=100),
     )
 
 
 def get_genetic_alg_model():
     return mlrose.NeuralNetwork(
         hidden_nodes=[5] * 6,
-        activation='relu',
-        algorithm='genetic_alg',
+        activation="relu",
+        algorithm="genetic_alg",
         max_iters=1000,
         is_classifier=True,
         learning_rate=0.001,
         random_state=42,
-        curve=True
+        curve=True,
     )
 
 
@@ -73,8 +73,8 @@ for size in train_size:
     random_hill_climb_model = get_random_hill_climb_model()
     sa_model = get_simulated_annealing_model()
     ga_model = get_genetic_alg_model()
-    training_data = dataset.training_data[:int(size * N)]
-    training_label = dataset.training_label[:int(size * N)]
+    training_data = dataset.training_data[: int(size * N)]
+    training_label = dataset.training_label[: int(size * N)]
     y_train_hot = one_hot.fit_transform(training_label).todense()
 
     start = timeit.default_timer()
@@ -106,7 +106,7 @@ plt.plot(sizes, sa_accuracy, label="sa")
 plt.plot(sizes, ga_accuracy, label="ga")
 plt.legend()
 plt.title(f"Learning curve for Car Valuation (Accuracy vs Training Size)")
-plt.savefig('Learning curve for Car Valuation.png')
+plt.savefig("Learning curve for Car Valuation.png")
 
 plt.clf()
 
@@ -116,7 +116,7 @@ plt.plot(sizes, sa_runtime, label="sa")
 plt.plot(sizes, ga_runtime, label="ga")
 plt.legend()
 plt.title(f"Run time for Car Valuation (Accuracy vs Training Size)")
-plt.savefig('Run time for Car Valuation.png')
+plt.savefig("Run time for Car Valuation.png")
 
 plt.clf()
 
@@ -135,6 +135,8 @@ rhc_pred_label = rhc_model.predict(dataset.test_data)
 ga_pred_label = ga_model.predict(dataset.test_data)
 sa_pred_label = sa_model.predict(dataset.test_data)
 
-print(f"Random Hill Climbing Test Accuracy: {accuracy_score(y_test_hot, rhc_pred_label)}")
+print(
+    f"Random Hill Climbing Test Accuracy: {accuracy_score(y_test_hot, rhc_pred_label)}"
+)
 print(f"Simulated Annealing Test Accuracy: {accuracy_score(y_test_hot, sa_pred_label)}")
 print(f"Genetic Algorithm Test Accuracy: {accuracy_score(y_test_hot, ga_pred_label)}")
