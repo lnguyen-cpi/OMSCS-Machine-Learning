@@ -21,8 +21,9 @@ Y = dataset.training_label
 # Uncomment and runs this block of code to figure out optimal parameter
 
 adam_boost = AdaBoostClassifier(random_state=42)
-parameters = {'n_estimators': list(range(1, 20)),
-              }
+parameters = {
+    "n_estimators": list(range(1, 20)),
+}
 gs = GridSearchCV(adam_boost, parameters)
 gs.fit(X, Y)
 print(gs.best_params_)
@@ -42,7 +43,9 @@ print(gs.best_params_)
 val_boosting = AdaBoostClassifier(random_state=42)
 estimators = list(range(1, 20))
 
-train_scores, valid_scores = validation_curve(val_boosting, X, Y, "n_estimators", estimators, cv=5)
+train_scores, valid_scores = validation_curve(
+    val_boosting, X, Y, "n_estimators", estimators, cv=5
+)
 
 train_scores_mean = np.mean(train_scores, axis=1)
 test_scores_mean = np.mean(valid_scores, axis=1)
@@ -51,13 +54,15 @@ plt.plot(estimators, test_scores_mean, label="valid_scores")
 plt.xticks(estimators)
 plt.legend()
 plt.title(f"Validation curve for AdamBoost (Weak learns vs Accuracy)")
-plt.savefig('Validation Curve.png')
+plt.savefig("Validation Curve.png")
 
 plt.clf()
 
 learning_boosting = AdaBoostClassifier(n_estimators=6, random_state=42)
 train_size = np.linspace(0.1, 1, 10)
-train_sizes, train_scores, validation_scores = learning_curve(learning_boosting, X, Y, cv=5, train_sizes=train_size)
+train_sizes, train_scores, validation_scores = learning_curve(
+    learning_boosting, X, Y, cv=5, train_sizes=train_size
+)
 train_scores_mean = np.mean(train_scores, axis=1)
 val_scores_mean = np.mean(validation_scores, axis=1)
 
@@ -66,7 +71,7 @@ plt.plot(train_sizes, train_scores_mean, label="train_scores")
 plt.plot(train_sizes, val_scores_mean, label="valid_scores")
 plt.legend()
 plt.title(f"Learning curve for AdamBoost (Weak learns vs Accuracy)")
-plt.savefig('Learning Curve.png')
+plt.savefig("Learning Curve.png")
 
 learning_boosting.fit(X, Y)
 predicted_label = learning_boosting.predict(dataset.test_data)
